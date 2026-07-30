@@ -797,33 +797,33 @@ public class SetupCMD implements CommandExecutor, TabExecutor {
             String key = args[2].toLowerCase();
             switch (name) {
                case "minion" -> {
-                  return (List)this.plugin.getMm().getMinions().keySet().stream().filter((m) -> m.toLowerCase().startsWith(key)).collect(Collectors.toList());
+                  return (List<String>)this.plugin.getMm().getMinions().keySet().stream().filter((m) -> m.toLowerCase().startsWith(key)).collect(Collectors.toList());
                }
                case "autosmelt" -> {
-                  return (List)this.plugin.getUm().getAutoSmelt().keySet().stream().filter((m) -> m.toLowerCase().startsWith(key)).collect(Collectors.toList());
+                  return (List<String>)this.plugin.getUm().getAutoSmelt().keySet().stream().filter((m) -> m.toLowerCase().startsWith(key)).collect(Collectors.toList());
                }
                case "fuel" -> {
-                  return (List)this.plugin.getUm().getFuel().keySet().stream().filter((m) -> m.toLowerCase().startsWith(key)).collect(Collectors.toList());
+                  return (List<String>)this.plugin.getUm().getFuel().keySet().stream().filter((m) -> m.toLowerCase().startsWith(key)).collect(Collectors.toList());
                }
                case "autosell" -> {
-                  return (List)this.plugin.getUm().getAutoSell().keySet().stream().filter((m) -> m.toLowerCase().startsWith(key)).collect(Collectors.toList());
+                  return (List<String>)this.plugin.getUm().getAutoSell().keySet().stream().filter((m) -> m.toLowerCase().startsWith(key)).collect(Collectors.toList());
                }
                case "compressor" -> {
-                  return (List)this.plugin.getUm().getCompressor().keySet().stream().filter((m) -> m.toLowerCase().startsWith(key)).collect(Collectors.toList());
+                  return (List<String>)this.plugin.getUm().getCompressor().keySet().stream().filter((m) -> m.toLowerCase().startsWith(key)).collect(Collectors.toList());
                }
                case "skin" -> {
-                  return (List)this.plugin.getSkm().getSkins().keySet().stream().filter((m) -> m.toLowerCase().startsWith(key)).collect(Collectors.toList());
+                  return (List<String>)this.plugin.getSkm().getSkins().keySet().stream().filter((m) -> m.toLowerCase().startsWith(key)).collect(Collectors.toList());
                }
             }
          }
 
          if (args.length == 4) {
             String name = args[3].toLowerCase();
-            List<String> online = new ArrayList();
+            List<String> online = new ArrayList<>();
             Bukkit.getOnlinePlayers().stream().filter((n) -> n.getName().toLowerCase().startsWith(name)).forEach((pl) -> online.add(pl.getName()));
             return online;
          } else {
-            return new ArrayList();
+            return new ArrayList<>();
          }
       }
    }
