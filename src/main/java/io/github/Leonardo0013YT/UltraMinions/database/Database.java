@@ -472,4 +472,105 @@ public class Database {
 
          if (pm.getUpgrade().getAutoSmelt() != null) {
             pms.setAutoSmelt(pm.getUpgrade().getAutoSmelt().getName());
-         
+         }
+
+         if (pm.getUpgrade().getAutoSell() != null) {
+            pms.setAutoSell(pm.getUpgrade().getAutoSell().getName());
+         }
+
+         pms.setChest(pm.isChest());
+         if (pm.isChest()) {
+            pms.setChest(Utils.getLocationString(pm.getChest().getLoc()));
+         }
+
+         minionSaves.add(Main.toMinionString(pms));
+         if (!autoSave) {
+            this.removeWhenOffline(pm, sync);
+         }
+      }
+
+      pds.setData(minionSaves);
+      this.plugin.getMm().getToSpawn().removeAll(pd.getMinions().values());
+      return pds;
+   }
+
+   public void removeWhenOffline(PlayerMinion pm, boolean sync) {
+      if (!sync && pm.getArmor() != null) {
+         this.plugin.getMm().getActiveMinions().remove(pm.getArmor().getUniqueId());
+         if (this.plugin.getAdm().hasHologramPlugin() && this.plugin.getAdm().hasHologram(pm)) {
+            this.plugin.getAdm().deleteHologram(pm);
+         }
+
+         pm.destroy();
+      }
+
+      pm.destroy();
+   }
+
+   public int getActions(PlayerMinion pm, long lastLogin, int delay, int food, int health) {
+      int passed = (int)((System.currentTimeMillis() - lastLogin) / 1000L / (long)delay);
+      if (!this.plugin.getCfm().isHealth() && !this.plugin.getCfm().isFood()) {
+         return passed / pm.getMinion().getType().getActions();
+      } else {
+         int posActions = 0;
+         if (this.plugin.getCfm().isHealth()) {
+            posActions += health;
+         }
+
+         if (this.plugin.getCfm().isFood()) {
+            posActions += food;
+         }
+
+         if (posActions == 0) {
+            return 0;
+         } else if (posActions > 0 && (this.plugin.getCfm().isHealth() || this.plugin.getCfm().isFood()) && passed > posActions) {
+            pm.getStat().setFood(0);
+            pm.getStat().setHealth(0);
+            return posActions / pm.getMinion().getType().getActions();
+         } else {
+            if (this.plugin.getCfm().isHealth() || this.plugin.getCfm().isFood()) {
+               int consumed;
+               int nFood;
+               if (passed >= food) {
+                  consumed = passed - food;
+                  nFood = 0;
+               } else {
+                  nFood = food - passed;
+                  consumed = 0;
+               }
+
+               int nHealth;
+               if (consumed >= health) {
+                  nHealth = 0;
+               } else {
+                  nHealth = health - consumed;
+               }
+
+               pm.getStat().setFood(nFood);
+               pm.getStat().setHealth(nHealth);
+            }
+
+            return passed / pm.getMinion().getType().getActions();
+         }
+      }
+   }
+
+   public boolean checkOtherMinion(Player p, Location loc) {
+      if (!p.getWorld().getName().equals(loc.getWorld().getName())) {
+         return false;
+      } else {
+         ArrayList<Entity> entities = new ArrayList(loc.getWorld().getNearbyEntities(loc, (double)0.5F, (double)0.5F, (double)0.5F));
+         entities.removeIf((entity) -> !entity.getType().equals(EntityType.ARMOR_STAND));
+
+         for(Entity as : entities) {
+            UUID uuid = as.getUniqueId();
+            if (Utils.isMinionUUID(uuid)) {
+               PlayerMinion pm = (PlayerMinion)this.plugin.getMm().getActiveMinions().get(uuid);
+               return pm != null;
+            }
+         }
+
+         return false;
+      }
+   }
+}
