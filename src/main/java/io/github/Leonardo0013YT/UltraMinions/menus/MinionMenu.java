@@ -27,15 +27,15 @@ import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 
 public class MinionMenu {
-   private final ArrayList<Integer> inv = new ArrayList(Arrays.asList(21, 22, 23, 24, 25, 30, 31, 32, 33, 34, 39, 40, 41, 42, 43));
-   private final ArrayList<Integer> fill = new ArrayList(Arrays.asList(0, 1, 2, 6, 7, 8, 9, 18, 27, 36, 45, 17, 26, 35, 44, 53, 46, 47, 48, 49, 50, 51, 52, 11, 12, 13, 14, 15, 16, 20, 29, 38));
-   private final Collection<Integer> workbench = new ArrayList(Arrays.asList(12, 13, 14, 21, 22, 23, 30, 31, 32));
-   private final HashMap<MinionType, ArrayList<int[]>> layouts = new HashMap();
+   private final ArrayList<Integer> inv = new ArrayList<>(Arrays.asList(21, 22, 23, 24, 25, 30, 31, 32, 33, 34, 39, 40, 41, 42, 43));
+   private final ArrayList<Integer> fill = new ArrayList<>(Arrays.asList(0, 1, 2, 6, 7, 8, 9, 18, 27, 36, 45, 17, 26, 35, 44, 53, 46, 47, 48, 49, 50, 51, 52, 11, 12, 13, 14, 15, 16, 20, 29, 38));
+   private final Collection<Integer> workbench = new ArrayList<>(Arrays.asList(12, 13, 14, 21, 22, 23, 30, 31, 32));
+   private final HashMap<MinionType, ArrayList<int[]>> layouts = new HashMap<>();
    private final int[] m1m1m1 = new int[3];
    private final int[] m1m1 = new int[2];
    private final int[] m1 = new int[1];
    private final Main plugin;
-   private HashMap<Player, Integer> pages = new HashMap();
+   private HashMap<Player, Integer> pages = new HashMap<>();
 
    public MinionMenu(Main plugin) {
       this.plugin = plugin;
@@ -51,34 +51,34 @@ public class MinionMenu {
       String s1 = plugin.getConfig().getString("slots.upgrade.1m");
       String[] s1m = s1.split(";");
       this.m1[0] = Integer.parseInt(s1m[0]);
-      this.layouts.put(MinionType.MINER, new ArrayList());
+      this.layouts.put(MinionType.MINER, new ArrayList<>());
       ((ArrayList)this.layouts.get(MinionType.MINER)).add(new int[]{2, 3, 4, 5, 6, 11, 12, 13, 14, 15, 20, 21, 23, 24, 29, 30, 31, 32, 33, 38, 39, 40, 41, 42});
       ((ArrayList)this.layouts.get(MinionType.MINER)).add(new int[]{0, 1, 9, 10, 18, 19, 27, 28, 36, 37, 45, 46, 47, 50, 51, 7, 8, 16, 17, 25, 26, 34, 35, 43, 44, 52, 53});
-      this.layouts.put(MinionType.FISHER, new ArrayList());
+      this.layouts.put(MinionType.FISHER, new ArrayList<>());
       ((ArrayList)this.layouts.get(MinionType.FISHER)).add(new int[]{2, 3, 4, 5, 6, 11, 12, 13, 14, 15, 20, 21, 23, 24, 29, 30, 31, 32, 33, 38, 39, 40, 41, 42});
       ((ArrayList)this.layouts.get(MinionType.FISHER)).add(new int[]{0, 1, 9, 10, 18, 19, 27, 28, 36, 37, 45, 46, 47, 50, 51, 7, 8, 16, 17, 25, 26, 34, 35, 43, 44, 52, 53});
-      this.layouts.put(MinionType.LUMBERJACK, new ArrayList());
+      this.layouts.put(MinionType.LUMBERJACK, new ArrayList<>());
       ((ArrayList)this.layouts.get(MinionType.LUMBERJACK)).add(new int[]{2, 3, 4, 5, 6, 11, 12, 13, 14, 15, 20, 21, 23, 24, 29, 30, 31, 32, 33, 38, 39, 40, 41, 42});
       ((ArrayList)this.layouts.get(MinionType.LUMBERJACK)).add(new int[]{0, 1, 9, 10, 18, 19, 27, 28, 36, 37, 45, 46, 47, 50, 51, 7, 8, 16, 17, 25, 26, 34, 35, 43, 44, 52, 53});
-      this.layouts.put(MinionType.FARMER, new ArrayList());
+      this.layouts.put(MinionType.FARMER, new ArrayList<>());
       ((ArrayList)this.layouts.get(MinionType.FARMER)).add(new int[]{2, 3, 4, 5, 6, 11, 12, 13, 14, 15, 20, 21, 23, 24, 29, 30, 31, 32, 33, 38, 39, 40, 41, 42});
       ((ArrayList)this.layouts.get(MinionType.FARMER)).add(new int[]{0, 1, 9, 10, 18, 19, 27, 28, 36, 37, 45, 46, 47, 50, 51, 7, 8, 16, 17, 25, 26, 34, 35, 43, 44, 52, 53});
-      this.layouts.put(MinionType.PEASANT, new ArrayList());
+      this.layouts.put(MinionType.PEASANT, new ArrayList<>());
       ((ArrayList)this.layouts.get(MinionType.PEASANT)).add(new int[]{2, 3, 4, 5, 6, 11, 12, 13, 14, 15, 20, 21, 23, 24, 29, 30, 31, 32, 33, 38, 39, 40, 41, 42});
       ((ArrayList)this.layouts.get(MinionType.PEASANT)).add(new int[]{0, 1, 9, 10, 18, 19, 27, 28, 36, 37, 45, 46, 47, 50, 51, 7, 8, 16, 17, 25, 26, 34, 35, 43, 44, 52, 53});
-      this.layouts.put(MinionType.HUNTER, new ArrayList());
+      this.layouts.put(MinionType.HUNTER, new ArrayList<>());
       ((ArrayList)this.layouts.get(MinionType.HUNTER)).add(new int[]{2, 3, 4, 5, 6, 11, 12, 13, 14, 15, 20, 21, 23, 24, 29, 30, 31, 32, 33, 38, 39, 40, 41, 42});
       ((ArrayList)this.layouts.get(MinionType.HUNTER)).add(new int[]{0, 9, 18, 27, 36, 45, 8, 17, 26, 35, 44, 53});
       ((ArrayList)this.layouts.get(MinionType.HUNTER)).add(new int[]{1, 10, 19, 28, 37, 46, 47, 50, 51, 52, 43, 34, 25, 16, 7});
-      this.layouts.put(MinionType.RANCHER, new ArrayList());
+      this.layouts.put(MinionType.RANCHER, new ArrayList<>());
       ((ArrayList)this.layouts.get(MinionType.RANCHER)).add(new int[]{2, 3, 4, 5, 6, 11, 12, 13, 14, 15, 20, 21, 23, 24, 29, 30, 31, 32, 33, 38, 39, 40, 41, 42});
       ((ArrayList)this.layouts.get(MinionType.RANCHER)).add(new int[]{0, 9, 18, 27, 36, 45, 8, 17, 26, 35, 44, 53});
       ((ArrayList)this.layouts.get(MinionType.RANCHER)).add(new int[]{1, 10, 19, 28, 37, 46, 47, 50, 51, 52, 43, 34, 25, 16, 7});
-      this.layouts.put(MinionType.CACTUSCANE, new ArrayList());
+      this.layouts.put(MinionType.CACTUSCANE, new ArrayList<>());
       ((ArrayList)this.layouts.get(MinionType.CACTUSCANE)).add(new int[]{2, 4, 6, 12, 13, 14, 20, 21, 23, 24, 30, 31, 32, 38, 40, 42});
       ((ArrayList)this.layouts.get(MinionType.CACTUSCANE)).add(new int[]{0, 1, 9, 10, 18, 19, 27, 28, 36, 37, 45, 46, 47, 50, 51, 7, 8, 16, 17, 25, 26, 34, 35, 43, 44, 52, 53});
       ((ArrayList)this.layouts.get(MinionType.CACTUSCANE)).add(new int[]{3, 5, 11, 15, 29, 33, 39, 41});
-      this.layouts.put(MinionType.COLLECTOR, new ArrayList());
+      this.layouts.put(MinionType.COLLECTOR, new ArrayList<>());
       ((ArrayList)this.layouts.get(MinionType.COLLECTOR)).add(new int[]{2, 3, 4, 5, 6, 11, 12, 13, 14, 15, 20, 21, 23, 24, 29, 30, 31, 32, 33, 38, 39, 40, 41, 42});
       ((ArrayList)this.layouts.get(MinionType.COLLECTOR)).add(new int[]{0, 1, 9, 10, 18, 19, 27, 28, 36, 37, 45, 46, 47, 50, 51, 7, 8, 16, 17, 25, 26, 34, 35, 43, 44, 52, 53});
    }
@@ -509,7 +509,7 @@ public class MinionMenu {
    private List<String> getInfoLore(PlayerMinion pm) {
       Minion m = pm.getMinion();
       MinionLevel ml = pm.getMinionLevel();
-      List<String> lore = new ArrayList();
+      List<String> lore = new ArrayList<>();
 
       for(String s : this.plugin.getLang().get("menus.minion.info.loreItem").split("\\n")) {
          if (s.equalsIgnoreCase("<lore>")) {
