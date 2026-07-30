@@ -371,7 +371,7 @@ public class Database {
             pd.setUnlocked(loadPlayer.getUnlocked());
             pd.setLevels(loadPlayer.getLevels());
 
-            for(String minion : new ArrayList(loadPlayer.getData())) {
+            for(String minion : new ArrayList<>(loadPlayer.getData())) {
                MinionSave ms = Main.fromMinionString(minion);
                if (!this.plugin.getMm().getMinions().containsKey(ms.getKey())) {
                   loadPlayer.getData().remove(minion);
@@ -440,7 +440,7 @@ public class Database {
 
    public PlayerDataSave playerDataToDataSave(PlayerData pd, boolean sync, boolean autoSave) {
       PlayerDataSave pds = new PlayerDataSave();
-      ArrayList<String> minionSaves = new ArrayList();
+      ArrayList<String> minionSaves = new ArrayList<>();
       pds.setUuid(pd.getUuid());
       pds.setLastLogin(System.currentTimeMillis());
       pds.setUnlocked(pd.getUnlocked());
@@ -559,7 +559,7 @@ public class Database {
       if (!p.getWorld().getName().equals(loc.getWorld().getName())) {
          return false;
       } else {
-         ArrayList<Entity> entities = new ArrayList(loc.getWorld().getNearbyEntities(loc, (double)0.5F, (double)0.5F, (double)0.5F));
+         ArrayList<Entity> entities = new ArrayList<>(loc.getWorld().getNearbyEntities(loc, (double)0.5F, (double)0.5F, (double)0.5F));
          entities.removeIf((entity) -> !entity.getType().equals(EntityType.ARMOR_STAND));
 
          for(Entity as : entities) {
