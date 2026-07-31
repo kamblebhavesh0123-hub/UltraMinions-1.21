@@ -1,12 +1,6 @@
 package io.github.Leonardo0013YT.UltraMinions.utils;
 
-import com.mojang.authlib.GameProfile;
-import com.mojang.authlib.properties.Property;
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
+import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemFlag;
@@ -14,6 +8,15 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.profile.PlayerProfile;
+import org.bukkit.profile.PlayerTextures;
+
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.UUID;
 
 public class ItemBuilder {
    public static ItemStack item(Material material, String displayName, String s) {
@@ -83,6 +86,30 @@ public class ItemBuilder {
       return c;
    }
 
+   /**
+    * Builds a custom-texture player head using Paper's public PlayerProfile API
+    * (no raw GameProfile / no reflection). Works on modern Paper (1.18.1+),
+    * including 1.21.x.
+    */
+   private static SkullMeta applyTexture(SkullMeta headMeta, String url) {
+      if (url == null || url.isEmpty()) {
+         return headMeta;
+      }
+
+      // Bukkit.createProfile requires a non-null UUID now (matches the fixed authlib behavior).
+      PlayerProfile profile = Bukkit.createProfile(UUID.randomUUID(), null);
+      PlayerTextures textures = profile.getTextures();
+      try {
+         textures.setSkin(new URL(url));
+      } catch (MalformedURLException e) {
+         e.printStackTrace();
+         return headMeta;
+      }
+      profile.setTextures(textures);
+      headMeta.setPlayerProfile(profile);
+      return headMeta;
+   }
+
    public static ItemStack createSkull(String displayName, String lore, String url) {
       ItemStack head = new ItemStack(Material.PLAYER_HEAD, 1);
       if (url.isEmpty()) {
@@ -91,17 +118,7 @@ public class ItemBuilder {
          SkullMeta headMeta = (SkullMeta)head.getItemMeta();
          headMeta.setDisplayName(displayName);
          headMeta.setLore((List)(lore.isEmpty() ? new ArrayList() : Arrays.asList(lore.split("\\n"))));
-         GameProfile profile = new GameProfile(UUID.randomUUID(), (String)null);
-         profile.getProperties().put("textures", new Property("textures", url));
-
-         try {
-            Field profileField = headMeta.getClass().getDeclaredField("profile");
-            profileField.setAccessible(true);
-            profileField.set(headMeta, profile);
-         } catch (NoSuchFieldException | SecurityException | IllegalAccessException | IllegalArgumentException error) {
-            ((Exception)error).printStackTrace();
-         }
-
+         headMeta = applyTexture(headMeta, url);
          head.setItemMeta(headMeta);
          return head;
       }
@@ -115,17 +132,7 @@ public class ItemBuilder {
          SkullMeta headMeta = (SkullMeta)head.getItemMeta();
          headMeta.setDisplayName(displayName);
          headMeta.setLore(lore);
-         GameProfile profile = new GameProfile(UUID.randomUUID(), (String)null);
-         profile.getProperties().put("textures", new Property("textures", url));
-
-         try {
-            Field profileField = headMeta.getClass().getDeclaredField("profile");
-            profileField.setAccessible(true);
-            profileField.set(headMeta, profile);
-         } catch (NoSuchFieldException | SecurityException | IllegalAccessException | IllegalArgumentException error) {
-            ((Exception)error).printStackTrace();
-         }
-
+         headMeta = applyTexture(headMeta, url);
          head.setItemMeta(headMeta);
          return head;
       }
@@ -151,4 +158,4 @@ public class ItemBuilder {
    public static void addItemFlags(ItemMeta itemMeta) {
       itemMeta.addItemFlags(new ItemFlag[]{ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_DESTROYS, ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_PLACED_ON, ItemFlag.HIDE_POTION_EFFECTS, ItemFlag.HIDE_UNBREAKABLE});
    }
-}
+   }
