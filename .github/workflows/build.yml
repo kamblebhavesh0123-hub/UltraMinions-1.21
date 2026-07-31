@@ -1,33 +1,28 @@
-name: Build UltraMinions Paper 1.21.11
+name: Build Plugin
 
 on:
   push:
-    branches: [ "main", "master" ]
-  pull_request:
-    branches: [ "main", "master" ]
+    branches: [ main ]
   workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-    - name: Set up JDK 21
-      uses: actions/setup-java@v4
-      with:
-        distribution: 'temurin'
-        java-version: '21'
-        cache: 'maven'
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: maven
 
-    - name: Build with Maven
-      run: mvn -B package --file pom.xml
+      - name: Build with Maven
+        run: mvn -B clean package
 
-    - name: Upload Plugin Artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: UltraMinions-1.21.11
-        path: target/*.jar
-        
+      - name: Upload built jar
+        uses: actions/upload-artifact@v4
+        with:
+          name: UltraMinions-jar
+          path: target/UltraMinions.jar
