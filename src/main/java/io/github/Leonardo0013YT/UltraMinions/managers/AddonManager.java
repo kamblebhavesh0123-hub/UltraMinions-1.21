@@ -2,13 +2,10 @@ package io.github.Leonardo0013YT.UltraMinions.managers;
 
 import io.github.Leonardo0013YT.UltraMinions.Main;
 import io.github.Leonardo0013YT.UltraMinions.addons.EssentialsAddon;
-import io.github.Leonardo0013YT.UltraMinions.addons.MVdWPlaceholderAPIAddon;
 import io.github.Leonardo0013YT.UltraMinions.addons.PlaceholderAPIAddon;
 import io.github.Leonardo0013YT.UltraMinions.addons.ShopGUIAddon;
 import io.github.Leonardo0013YT.UltraMinions.addons.VaultAddon;
 import io.github.Leonardo0013YT.UltraMinions.addons.holograms.HologramsAddon;
-import io.github.Leonardo0013YT.UltraMinions.addons.holograms.HolographicDisplaysAddon;
-import io.github.Leonardo0013YT.UltraMinions.addons.holograms.TrHologramAddon;
 import io.github.Leonardo0013YT.UltraMinions.database.PlayerData;
 import io.github.Leonardo0013YT.UltraMinions.database.PlayerMinion;
 import io.github.Leonardo0013YT.UltraMinions.interfaces.HologramAddon;
@@ -40,17 +37,6 @@ public class AddonManager {
    }
 
    public void reload() {
-      if (this.plugin.getCfm().isMVdWPlaceholderAPI()) {
-         if (Bukkit.getPluginManager().isPluginEnabled("MVdWPlaceholderAPI")) {
-            this.placeholder = new MVdWPlaceholderAPIAddon();
-            this.plugin.sendLogMessage("Hooked into §aMVdWPlaceholderAPI§e!");
-         } else {
-            this.plugin.getConfig().set("addons.MVdWPlaceholderAPI", false);
-            this.plugin.saveConfig();
-            this.plugin.getCm().reload();
-         }
-      }
-
       if (this.plugin.getCfm().isPlaceholdersAPI()) {
          if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
             this.placeholder = new PlaceholderAPIAddon();
@@ -82,31 +68,11 @@ public class AddonManager {
          }
       }
 
-      if (this.plugin.getCfm().isTrHologram()) {
-         if (Bukkit.getPluginManager().isPluginEnabled("TrHologram")) {
-            this.ha = new TrHologramAddon();
-         } else {
-            this.plugin.getConfig().set("addons.trHologram", false);
-            this.plugin.saveConfig();
-            this.plugin.getCfm().reload();
-         }
-      }
-
       if (this.plugin.getCfm().isHolograms()) {
          if (Bukkit.getPluginManager().isPluginEnabled("Holograms")) {
             this.ha = new HologramsAddon(this.plugin);
          } else {
             this.plugin.getConfig().set("addons.holograms", false);
-            this.plugin.saveConfig();
-            this.plugin.getCfm().reload();
-         }
-      }
-
-      if (this.plugin.getCfm().isHolographicdisplays()) {
-         if (Bukkit.getPluginManager().isPluginEnabled("HolographicDisplays")) {
-            this.ha = new HolographicDisplaysAddon(this.plugin);
-         } else {
-            this.plugin.getConfig().set("addons.holographicdisplays", false);
             this.plugin.saveConfig();
             this.plugin.getCfm().reload();
          }
@@ -303,4 +269,3 @@ public class AddonManager {
       return this.ha != null;
    }
    }
-   
